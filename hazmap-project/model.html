@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hazmap Team</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/creative.css" type="text/css">
+    <link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css'>
+     <script src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'>
+     </script>
+     <script src='http://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js'>
+     </script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top">
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src="img/th-logo.png" id="logo"/>
+            </div>
+
+               <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <h2>Hazmap</h2><ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="index.html" id="nav-titles">Home</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="model.html" id="nav-titles">Model Design</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="predictions.html" id="nav-titles">Incident Predictions</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#about" id="nav-titles">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#team" id="nav-titles">Team</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact" id="nav-titles">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+   <div>
+<h1 style="text-align: center">Hazardous Freight Incident Prediction Model</h1>
+<br></br>
+
+<h2 style="text-align: center">Model Description</h2>
+
+
+<p style="margin-left: 20px; margin-right: 20px">This model uses the incident report database from The Office of Hazardous Materials Safety to ascertain an incident occurrence based on the type of hazardous material transported, the mode of transportation, container capacity, and the value of commodity. The model trained on incident data is then used on Freight Analysis Framework (FAF) data from Oak Ridge National Laboratory to determine the incident occurrence at city level spatial resolution. The result data is visualized in GIS with the help of Javascript.</p>
+
+<h2 style="text-align: center">Overview of Model Methodology</h2>
+
+
+<p style="margin-left: 20px; margin-right: 20px">The main goal of this prediction model is to be able to use the FAF dataset to predict incidents. FAF dataset consists of freight movements between various cities. The data is given in terms of total tonnage hauled (tons), total value (millions of dollars), mode of transport, and commodity (hazardous material) type (paint, automotive fuel, electronic waste, etc.).
+As the first step, we engineered the features in incident database in such a way that the model could be trained on data similar to FAF dataset. The incident database consists of quantity released, container capacity, state of hazardous material (solid / liquid / gaseous), commodity type (ranging from explosives, combustible fuel to poisonous chemicals), and damage expressed in USD. Figure 1 shows the flowchart of the model design.</p>
+
+<img src = "img/flowchart.png" class="wow bounceIn text-primary">
+<br></br>
+
+<p style="margin-left: 20px; margin-right: 20px">The FAF dataset contains only tonnage information. However, in the incident dataset, liquids were expressed in gallons, gaseous materials were expressed in cubic feet and solids were expressed in pounds. We converted different states of hazardous material to a common unit (tons). Liquid gallons were assumed to have similar density to that of gasoline or automotive fuels (1 gallon = 0.031 tons), gaseous materials were assumed to have similar density to that of natural gas (1 cu.feet = 0.00025 tons). Secondly, FAF dataset contains total value of commodity transported, but in the incident database we only have the value of damages (which relates to the quantity released attribute). Using the values of capacity, quantity released and damages, we were able to obtain the total value of the commodity transported in the route.<p>
+
+<p style="margin-left: 20px; margin-right: 20px">Moreover, the commodity types were categorized over 250 types of specific hazardous materials. We categorized them into five groups: (a) Explosives, (b) Flammable, (c) Poisonous, (d) Radioactive and (e) Miscellaneous. The FAF dataset commodities were also categorized in similar fashion.
+The incident dataset has an indicatory variable that conveys whether an incident took place for a given datapoint. A classifier algorithm (randomforest) is developed using the explanatory variables on the subset of the dataset to train the data. The model is then tested on the rest of the dataset. The accuracy of classification of this model is about 98%. This model is then used on the FAF dataset to identify which locations are more incident prone.</p>
+</div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/wow.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
+</body>
+
+</html>
